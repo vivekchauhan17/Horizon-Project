@@ -1,7 +1,7 @@
 /* @import "tailwindcss"; */
 /* @tailwindcss/postcss; */
-/* @tailwind base;
-@tailwind components; */
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 @layer base {
