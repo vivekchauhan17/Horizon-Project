@@ -8,7 +8,7 @@ const app = express();
 app.use(cors({
     origin: [
         'http://localhost:5173',
-        'https://horizon-project-backend-tft6.onrender.com/'
+        'https://horizon-project-backend-tft6.onrender.com'
     ]
 }));
 app.use(express.json({ limit: '1mb' }));

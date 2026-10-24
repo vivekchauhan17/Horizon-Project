@@ -25,7 +25,7 @@ export default function Landing() {
       <section className="mx-auto max-w-4xl px-4 py-20 text-center">
         <p className="mb-3 text-sm font-medium text-indigo-600">Learn Smarter. Prepare Better.</p>
         <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Your Personal AI Exam Preparation Assistant.</h1>
-        <p className="mx-auto mt-4 max-w-2xl text-slate-600">ExamPrep AI transforms your study materials into simplified notes, interactive quizzes, and a personalized study plan, all in one place.</p>
+        <p className="mx-auto mt-4 max-w-2xl text-slate-600">StudyLoop AI transforms your study materials into simplified notes, interactive quizzes, and a personalized study plan, all in one place.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link to="/dashboard" className="btn-primary px-6 py-3">Start Preparing</Link>
           <button onClick={() => go('features')} className="btn-ghost px-6 py-3">Explore Features</button>
@@ -39,7 +39,7 @@ export default function Landing() {
         <h2 className="mb-8 text-center text-2xl font-semibold text-slate-900">How it works</h2>
         <div className="grid gap-4 md:grid-cols-3">{steps.map(([I, t, d], i) => <div key={t} className="text-center"><div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600"><I className="h-5 w-5" /></div><p className="text-xs text-slate-400">Step {i + 1}</p><h3 className="font-semibold text-slate-900">{t}</h3><p className="text-sm text-slate-600">{d}</p></div>)}</div>
       </div></section>
-      <footer className="border-t border-slate-200 py-6 text-center text-sm text-slate-500">ExamPrep AI: an AI-powered learning platform that turns study material into notes, quizzes and study plans.</footer>
+      <footer className="border-t border-slate-200 py-6 text-center text-sm text-slate-500">StudyLoop AI: an AI-powered learning platform that turns study material into notes, quizzes and study plans.</footer>
     </div>
   );
 }
