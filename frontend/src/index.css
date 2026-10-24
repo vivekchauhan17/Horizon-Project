@@ -1,9 +1,8 @@
 /* @import "tailwindcss"; */
 /* @tailwindcss/postcss; */
-@tailwind base;
-@tailwind components;
+/* @tailwind base;
+@tailwind components; */
 @tailwind utilities;
-@import "tailwindcss";
 
 @layer base {
   body {
