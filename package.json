@@ -1,1 +1,194 @@
-{}
+# ExamPrep AI: Learn Smarter. Prepare Better.
+
+An AI-powered exam preparation platform. Students turn study material into simplified notes, quizzes and study plans, build personalised learning roadmaps, and keep a daily study streak.
+
+Built for the hackathon theme **Artificial Intelligence in Education**.
+
+---
+
+## Features
+
+| Page | What it does |
+|---|---|
+| **Landing** | Product intro, features and "How it works". |
+| **Dashboard** | Study-streak calendar at the top, then quizzes attempted, average score, best score, notes saved, goal completion %, tasks completed, goals overview, recent activity, upcoming tasks and topics to revise. |
+| **Roadmap** | Enter a course, subject or tech field, then pick your level, duration (4 / 8 / 12 / 24 weeks) and hours per week. Gemini builds a phase-by-phase roadmap with topics, a practice task and an outcome for each phase. Choose a goal sticker, save the roadmap as a goal, and tick topics as you finish them. |
+| **Notes** | Upload a PDF (max 5 MB) or paste text. Get an overview, key concepts, definitions and a revision summary. Copy or save the notes. |
+| **Quiz** | Generate 5 or 10 MCQs (Easy / Medium / Hard) from pasted text or saved notes. One question at a time, scored on the server, with explanations after submit. |
+| **Planner** | Subjects, exam date, daily hours, session length and weak topics give a day-by-day timetable with tickable tasks. |
+| **Progress** | Your saved roadmap goals only. Open a goal to see how much is complete and tick topics. |
+
+**Study streak:** the streak counts only when you complete a topic in a roadmap goal. Unticking a topic removes it, so a day counts only while something from that day is still complete. Quizzes, notes and the planner do not affect the streak.
+
+---
+
+## Tech stack
+
+- **Frontend:** React + Vite (JavaScript/JSX), Tailwind CSS v3, React Router, Lucide icons
+- **Backend:** Node.js, Express (ES modules), Multer, unpdf, dotenv, CORS, express-rate-limit
+- **AI:** Google Gemini via the official `@google/genai` SDK
+- **Storage:** browser `localStorage` (no database or login)
+
+---
+
+## Project structure
+
+```
+Exam-Preap-AI/
+├── backend/
+│   ├── src/
+│   │   ├── server.js
+│   │   ├── app.js
+│   │   ├── routes/api.routes.js
+│   │   ├── controllers/api.controller.js
+│   │   ├── services/ai.service.js        # all Gemini calls + validation
+│   │   ├── services/pdf.service.js       # PDF text extraction
+│   │   └── middleware/error.middleware.js
+│   ├── .env.example
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── pages/        # Landing, Dashboard, Roadmap, Notes, Quiz, Planner, Progress
+│   │   ├── components/   # AppLayout, ui, GoalSticker, GoalView, StreakCalendar
+│   │   ├── services/api.js
+│   │   ├── utils/storage.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── .env.example
+│   └── package.json
+└── README.md
+```
+
+---
+
+## Getting started
+
+### 1. Requirements
+- [Node.js](https://nodejs.org) LTS (v18 or newer)
+- A free Gemini API key from https://aistudio.google.com/apikey
+
+### 2. Clone
+```bash
+git clone https://github.com/bhupendrasinghbs/Exam-Preap-AI.git
+cd Exam-Preap-AI
+```
+
+### 3. Backend (port 5000)
+```bash
+cd backend
+cp .env.example .env      # on Windows: copy .env.example .env
+npm install
+npm run dev
+```
+
+Edit `backend/.env`:
+```dotenv
+GEMINI_API_KEY=your_key_here
+GEMINI_MODEL=gemini-3.5-flash-lite
+GEMINI_FALLBACK_MODEL=gemini-3.1-flash-lite
+PORT=5000
+FRONTEND_ORIGIN=http://localhost:5173
+```
+Model names change often. If you get a model "not found" error, check the current names at https://ai.google.dev/gemini-api/docs/models and update `GEMINI_MODEL`. The fallback model is used automatically if the main one is overloaded.
+
+### 4. Frontend (port 5173)
+Open a second terminal:
+```bash
+cd frontend
+cp .env.example .env
+npm install
+npm run dev
+```
+Open http://localhost:5173.
+
+> The frontend needs **Tailwind CSS v3**. If you see a PostCSS/Tailwind error, run `npm install -D tailwindcss@3 postcss autoprefixer`.
+
+---
+
+## API
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/health` | Backend status |
+| POST | `/api/notes` | Notes from `{ text }` (JSON) or a PDF `file` (multipart) |
+| POST | `/api/quiz` | Generate MCQs. The answer key is **not** sent to the browser |
+| POST | `/api/quiz/submit` | Score a quiz on the server and return answers and explanations |
+| POST | `/api/plan` | Generate a study timetable |
+| POST | `/api/roadmap` | Generate a learning roadmap from `{ goal, level, weeks, hoursPerWeek, notes }` |
+
+---
+
+## How it works
+
+```
+Browser (React)  ->  Express backend  ->  Gemini AI
+      ^                    |
+  localStorage     validated JSON comes back
+```
+
+- Every AI response is requested as JSON and **validated on the backend** before reaching the UI.
+- Quiz answers stay on the server until the student submits (keys are held in server memory for 2 hours).
+- If Gemini returns a 503, the backend retries and then switches to the fallback model.
+- Saved data lives in `localStorage` keys: `ep_notes`, `ep_quizzes`, `ep_plan`, `ep_goals`, `ep_roadmap_draft`, `ep_streak`.
+
+---
+
+## Security and safety
+
+- The API key lives only in `backend/.env` and never reaches the browser. `.env` is git-ignored.
+- PDF type and size are checked (5 MB max). Files are processed in memory and never saved to disk.
+- Study text is capped at 30,000 characters. The student is told when text is truncated.
+- Rate limit of 30 requests per minute on `/api`, and CORS is restricted to `FRONTEND_ORIGIN`.
+- Error responses never include stack traces or secrets.
+- AI-generated content can be wrong. Students should verify important facts against their course material.
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| "Cannot reach the backend" | Start the backend, and check `VITE_API_URL` in `frontend/.env`. |
+| CORS error | `FRONTEND_ORIGIN` in `backend/.env` must exactly match the frontend URL. |
+| "Missing GEMINI_API_KEY" | Create `backend/.env`, add your key, and restart the backend. |
+| Model 404 / "no longer available" | Change `GEMINI_MODEL` to a current model name. |
+| 503 "high demand" | Temporary on Google's side. The backend retries and falls back. Try again in a minute. |
+| "No readable text found" | The PDF is scanned images. Use a text-based PDF or paste the text. |
+| Port already in use | Change `PORT` in `backend/.env` and `VITE_API_URL` in `frontend/.env`. |
+| `.env` changes not applied | Restart the backend after editing `.env`. |
+| Tailwind / PostCSS error | Install Tailwind v3: `npm install -D tailwindcss@3 postcss autoprefixer`. |
+
+---
+
+## Demo flow (3 minutes)
+
+1. **Dashboard:** show the empty state and the streak calendar.
+2. **Roadmap:** enter "Full Stack Web Development", pick a sticker, generate, **save the goal**, and tick a few topics.
+3. **Dashboard:** show the streak and goal completion going up.
+4. **Notes:** upload a PDF, generate and save notes.
+5. **Quiz:** pick the saved note, take 5 questions, submit, and show the explanations.
+6. **Planner:** 3 topics, exam in 7 days, and tick tasks.
+7. **Progress:** open the saved goal and show its completion.
+
+---
+
+## Pitch
+
+- **Problem:** students spend hours turning long material into notes, finding practice questions and planning what to study, across separate tools.
+- **Solution:** one app for the whole loop: roadmap, notes, quiz, plan and progress.
+- **Target users:** school, college and competitive-exam students.
+- **AI:** the backend sends task-specific prompts to Gemini, requests JSON, validates it, and only then shows it.
+- **Innovation:** goal roadmaps with a streak that rewards real progress, and quiz answers that stay on the server.
+
+---
+
+## Limitations
+
+- Data is stored only in the current browser (no login or database), so clearing browser data resets everything.
+- Scanned (image-only) PDFs are not supported (no OCR).
+- Active quizzes expire if the backend restarts.
+- No reminders or notifications are sent.
+
+## Future improvements
+
+Login and a database (MongoDB), OCR for scanned PDFs, flashcards and spaced repetition, reminders, multiple languages, and a teacher / class mode.
