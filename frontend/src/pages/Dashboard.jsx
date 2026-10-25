@@ -24,6 +24,7 @@ export default function Dashboard() {
     ...goals.filter((g) => g.savedAt).map((g) => ({ t: `Saved goal: ${g.goal}`, d: g.savedAt })),
   ].sort((a, b) => b.d.localeCompare(a.d)).slice(0, 6);
 
+  
   return (
     <div className="space-y-6">
       <PageHeader title="Welcome back 👋" sub="Your streak, goals and activity in one place." />
@@ -34,6 +35,7 @@ export default function Dashboard() {
         <p className="mt-2 text-xs text-slate-400">Your streak grows when you complete a topic in a roadmap goal.</p>
       </section>
 
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Stat icon={ListChecks} label="Quizzes attempted" value={quizzes.length} />
         <Stat icon={BarChart3} label="Average score" value={quizzes.length ? `${avgScore(quizzes)}%` : '–'} />
@@ -43,11 +45,13 @@ export default function Dashboard() {
         <Stat icon={CheckSquare} label="Tasks completed" value={`${tasks.filter((t) => t.done).length}/${tasks.length}`} />
       </div>
 
+
       <div className="flex flex-wrap gap-3">
         <Link to="/roadmap" className="btn-primary"><MapIcon className="h-4 w-4" />Create a roadmap</Link>
         <Link to="/notes" className="btn-ghost"><Upload className="h-4 w-4" />Upload study material</Link>
         <Link to="/quiz" className="btn-ghost"><Sparkles className="h-4 w-4" />Generate a quiz</Link>
       </div>
+
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="card">
