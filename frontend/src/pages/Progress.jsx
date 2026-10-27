@@ -42,14 +42,17 @@ export default function Progress() {
                     <span className="min-w-0 flex-1">
                       <span className="flex items-center gap-2">
                         <span className="truncate font-semibold text-slate-900">{g.goal}</span>
-                        {p.pct === 100 && <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700"><CheckCircle2 className="h-3 w-3" />Completed</span>}
+                        {p.pct === 100 && <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+                        <CheckCircle2 className="h-3 w-3" />Completed</span>}
                       </span>
                       <span className="block text-xs text-slate-500">{p.done} of {p.total} topics done · {p.pct}% complete</span>
                       <span className="mt-1.5 block h-2 rounded bg-slate-100"><span className="block h-2 rounded bg-indigo-600 transition-all" style={{ width: `${p.pct}%` }} /></span>
                     </span>
                     <ChevronDown className={`h-5 w-5 shrink-0 text-slate-400 transition ${open ? 'rotate-180' : ''}`} />
                   </button>
-                  <button type="button" onClick={() => removeGoal(g.id)} aria-label="Remove goal" className="text-slate-400 hover:text-red-600"><Trash2 className="h-4 w-4" /></button>
+                  <button type="button" onClick={() => 
+                    removeGoal(g.id)} aria-label="Remove goal" className="text-slate-400 hover:text-red-600">
+                    <Trash2 className="h-4 w-4" /></button>
                 </div>
                 {open && <div className="border-t border-slate-100 bg-slate-50 p-4"><GoalView goal={g} compact onToggle={(key) => toggleTopic(g.id, key)} /></div>}
               </div>
