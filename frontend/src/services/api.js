@@ -1,36 +1,33 @@
-// const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-// async function call(path, opts) {
-//   let res;
-//   try { res = await fetch(BASE + path, opts); }
-//   catch { throw new Error(`Cannot reach the backend at ${BASE}. Is it running?`); }
-//   const data = await res.json().catch(() => ({}));
-//   if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
-//   return data;
-// }
-// const post = (b) => ({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) });
-// export const generateNotes = ({ text, file }) => {
-//   if (file) { const f = new FormData(); f.append('file', file); return call('/api/notes', { method: 'POST', body: f }); }
-//   return call('/api/notes', post({ text }));
-// };
-// export const generateQuiz = (b) => call('/api/quiz', post(b));
-// export const submitQuiz = (b) => call('/api/quiz/submit', post(b));
-// export const generatePlan = (b) => call('/api/plan', post(b));
+import express from 'express';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import routes from './routes/api.routes.js';
+import { notFound, errorHandler } from './middleware/error.middleware.js';
 
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-async function call(path, opts) {
-  let res;
-  try { res = await fetch(BASE + path, opts); }
-  catch { throw new Error(`Cannot reach the backend at ${BASE}. Is it running?`); }
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
-  return data;
-}
-const post = (b) => ({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) });
-export const generateNotes = ({ text, file }) => {
-  if (file) { const f = new FormData(); f.append('file', file); return call('/api/notes', { method: 'POST', body: f }); }
-  return call('/api/notes', post({ text }));
-};
-export const generateQuiz = (b) => call('/api/quiz', post(b));
-export const submitQuiz = (b) => call('/api/quiz/submit', post(b));
-export const generatePlan = (b) => call('/api/plan', post(b));
-export const generateRoadmap = (b) => call('/api/roadmap', post(b));
+const app = express();
+app.set('trust proxy', 1); // Render runs behind a proxy
+
+// Always allowed: local dev + your live frontend.
+// Anything in FRONTEND_ORIGIN (comma-separated) is added on top.
+const defaults = ['http://localhost:5173', 'https://horizon-project-qfjm.onrender.com'];
+const fromEnv = (process.env.FRONTEND_ORIGIN || '')
+  .split(',')
+  .map((o) => o.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+const origins = [...new Set([...defaults, ...fromEnv])];
+
+app.use(cors({ origin: origins }));
+app.use(express.json({ limit: '1mb' }));
+app.use(
+  '/api',
+  rateLimit({
+    windowMs: 60_000,
+    limit: 30,
+    message: { error: 'Too many requests. Please wait a minute.' },
+  })
+);
+app.use('/api', routes);
+app.use(notFound);
+app.use(errorHandler);
+
+export default app;
