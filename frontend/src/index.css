@@ -1,5 +1,5 @@
-/* @import "tailwindcss"; */
-/* @tailwindcss/postcss; */
+/* @import "tailwindcss";
+@tailwindcss/postcss; */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
