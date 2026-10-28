@@ -51,7 +51,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="card">
+        <div className="card">s
           <h2 className="mb-3 font-semibold">My goals</h2>
           {goals.length ? (
             <ul className="space-y-3">
