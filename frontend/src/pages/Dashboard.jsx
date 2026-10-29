@@ -46,7 +46,7 @@ export default function Dashboard() {
             <Stat icon={CheckSquare} label="Tasks completed" value={`${tasks.filter((t) => t.done).length}/${tasks.length}`} />
           </div>
         </div>
-        <div className="w-full max-w-xs md:w-72 md:shrink-0">
+        <div className="order-first mx-auto w-full max-w-xs md:order-none md:mx-0 md:w-72 md:shrink-0">
           <StreakCalendar activity={getStreakDays()} />
         </div>
       </div>
