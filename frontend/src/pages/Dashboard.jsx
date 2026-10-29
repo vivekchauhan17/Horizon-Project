@@ -11,7 +11,8 @@ export default function Dashboard() {
   const upcoming = tasks.filter((t) => !t.done).slice(0, 5);
 
   const best = quizzes.length ? Math.max(...quizzes.map((q) => Math.round((q.score / q.total) * 100))) : 0;
-  const totals = goals.reduce((a, g) => { const p = goalProgress(g); return { done: a.done + p.done, total: a.total + p.total }; }, { done: 0, total: 0 });
+  const totals = goals.reduce((a, g) => {
+    const p = goalProgress(g); return { done: a.done + p.done, total: a.total + p.total }; }, { done: 0, total: 0 });
   const goalPct = totals.total ? Math.round((totals.done / totals.total) * 100) : 0;
 
   const weak = {};
