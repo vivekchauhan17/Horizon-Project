@@ -11,8 +11,7 @@ export default function Dashboard() {
   const upcoming = tasks.filter((t) => !t.done).slice(0, 5);
 
   const best = quizzes.length ? Math.max(...quizzes.map((q) => Math.round((q.score / q.total) * 100))) : 0;
-  const totals = goals.reduce((a, g) => {
-     const p = goalProgress(g); return { done: a.done + p.done, total: a.total + p.total }; }, { done: 0, total: 0 });
+  const totals = goals.reduce((a, g) => { const p = goalProgress(g); return { done: a.done + p.done, total: a.total + p.total }; }, { done: 0, total: 0 });
   const goalPct = totals.total ? Math.round((totals.done / totals.total) * 100) : 0;
 
   const weak = {};
@@ -27,31 +26,32 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Welcome back 👋" sub="Your streak, goals and activity in one place." />
-
-      <section>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">Study streak</h2>
-        <StreakCalendar activity={getStreakDays()} />
-        <p className="mt-2 text-xs text-slate-400">Your streak grows when you complete a topic in a roadmap goal.</p>
-      </section>
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Stat icon={ListChecks} label="Quizzes attempted" value={quizzes.length} />
-        <Stat icon={BarChart3} label="Average score" value={quizzes.length ? `${avgScore(quizzes)}%` : '–'} />
-        <Stat icon={Trophy} label="Best score" value={quizzes.length ? `${best}%` : '–'} />
-        <Stat icon={FileText} label="Notes saved" value={notes.length} />
-        <Stat icon={Target} label="Goal completion" value={goals.length ? `${goalPct}%` : '–'} />
-        <Stat icon={CheckSquare} label="Tasks completed" value={`${tasks.filter((t) => t.done).length}/${tasks.length}`} />
-      </div>
-
-      <div className="flex flex-wrap gap-3">
-        <Link to="/roadmap" className="btn-primary"><MapIcon className="h-4 w-4" />Create a roadmap</Link>
-        <Link to="/notes" className="btn-ghost"><Upload className="h-4 w-4" />Upload study material</Link>
-        <Link to="/quiz" className="btn-ghost"><Sparkles className="h-4 w-4" />Generate a quiz</Link>
+      <div className="flex flex-col gap-6 md:flex-row md:items-start">
+        <div className="min-w-0 flex-1 space-y-5">
+          <div>
+            <PageHeader title="Welcome back 👋" sub="Your streak, goals and activity in one place." />
+            <div className="flex flex-wrap gap-3">
+              <Link to="/roadmap" className="btn-primary"><MapIcon className="h-4 w-4" />Create a roadmap</Link>
+              <Link to="/notes" className="btn-ghost"><Upload className="h-4 w-4" />Upload study material</Link>
+              <Link to="/quiz" className="btn-ghost"><Sparkles className="h-4 w-4" />Generate a quiz</Link>
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <Stat icon={ListChecks} label="Quizzes attempted" value={quizzes.length} />
+            <Stat icon={BarChart3} label="Average score" value={quizzes.length ? `${avgScore(quizzes)}%` : '–'} />
+            <Stat icon={Trophy} label="Best score" value={quizzes.length ? `${best}%` : '–'} />
+            <Stat icon={FileText} label="Notes saved" value={notes.length} />
+            <Stat icon={Target} label="Goal completion" value={goals.length ? `${goalPct}%` : '–'} />
+            <Stat icon={CheckSquare} label="Tasks completed" value={`${tasks.filter((t) => t.done).length}/${tasks.length}`} />
+          </div>
+        </div>
+        <div className="w-full max-w-xs md:w-72 md:shrink-0">
+          <StreakCalendar activity={getStreakDays()} />
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="card">s
+        <div className="card">
           <h2 className="mb-3 font-semibold">My goals</h2>
           {goals.length ? (
             <ul className="space-y-3">
