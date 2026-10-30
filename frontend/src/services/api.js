@@ -1,6 +1,5 @@
 const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-
 async function call(path, opts) {
   let res;
   try {
