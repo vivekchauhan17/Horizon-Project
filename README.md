@@ -161,6 +161,7 @@ Saved in `localStorage`: `ep_notes`, `ep_quizzes`, `ep_plan`, `ep_goals`, `ep_ro
 
 ---
 
+
 ## Security and safety
 
 - API key only in backend environment variables, never in frontend code or Git.
@@ -169,22 +170,6 @@ Saved in `localStorage`: `ep_notes`, `ep_quizzes`, `ep_plan`, `ep_goals`, `ep_ro
 - Rate limit of 30 requests per minute on `/api`; CORS limited to approved frontend origins.
 - Errors never expose stack traces or secrets.
 - AI content can be wrong. Students should verify important facts against course material.
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| "Cannot reach the backend" | Backend not running, wrong `VITE_API_URL`, or a CORS block. Check the browser console. |
-| CORS error on the live site | Redeploy the backend with the latest `app.js`; make sure `FRONTEND_ORIGIN` holds the **frontend** URL, not the backend one. |
-| "Missing GEMINI_API_KEY" | Add the key to `backend/.env` (or Render Environment) and restart. |
-| Model 404 / not available | Change `GEMINI_MODEL` to a current model name. |
-| 503 "high demand" | Temporary on Google's side; the backend retries and falls back. |
-| "No readable text found" | The PDF is scanned images. Use a text-based PDF or paste the text. |
-| Tailwind / PostCSS error | Install Tailwind v3 and commit `package-lock.json`. |
-| Refreshing a page shows "Not Found" | Add the `/*` to `/index.html` rewrite rule on the Render static site. |
-| Vite error mentioning `express` in the frontend | Backend code was pasted into a frontend file. `frontend/src/services/api.js` must only contain `fetch` code. |
 
 ---
 
