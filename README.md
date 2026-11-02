@@ -161,13 +161,13 @@ Saved in `localStorage`: `ep_notes`, `ep_quizzes`, `ep_plan`, `ep_goals`, `ep_ro
 
 ---
 
-
 ## Security and safety
 
 - API key only in backend environment variables, never in frontend code or Git.
 - PDF type and size checked (5 MB max); files are read in memory and never saved.
 - Text capped at 30,000 characters; the user is told when it is truncated.
 - Rate limit of 30 requests per minute on `/api`; CORS limited to approved frontend origins.
+- Errors never expose stack traces or secrets.
 - AI content can be wrong. Students should verify important facts against course material.
 
 ---
