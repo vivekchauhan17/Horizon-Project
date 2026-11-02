@@ -44,6 +44,7 @@ export default function StreakCalendar({ activity }) {
         <p className="mt-3 text-xs text-indigo-100">{msg}</p>
       </div>
 
+
       <div className="p-4">
         <div className="mb-2 flex items-center justify-between">
           <button type="button" onClick={() => shift(-1)} aria-label="Previous month" className="rounded-md p-1 text-slate-500 hover:bg-slate-100"><ChevronLeft className="h-4 w-4" /></button>
@@ -68,6 +69,7 @@ export default function StreakCalendar({ activity }) {
             );
           })}
         </div>
+
         <div className="mt-3 flex items-center justify-center gap-4 text-xs text-slate-500">
           <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded bg-gradient-to-br from-amber-400 to-orange-500" />Streak</span>
           <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded bg-indigo-400" />Studied</span>
