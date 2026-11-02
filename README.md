@@ -161,6 +161,7 @@ Saved in `localStorage`: `ep_notes`, `ep_quizzes`, `ep_plan`, `ep_goals`, `ep_ro
 
 ---
 
++
 ## Security and safety
 
 - API key only in backend environment variables, never in frontend code or Git.
