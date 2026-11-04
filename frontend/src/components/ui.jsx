@@ -17,6 +17,7 @@ export function ProgressBar({ active, label = 'Working...' }) {
         </div>
     );
 }
+
 export const Spinner = ({ text = 'Working...' }) => <span className="inline-flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" />{text}</span>;
 export const ErrorBox = ({ msg }) => msg ? <div className="flex gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"><AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />{msg}</div> : null;
 export const Notice = ({ msg, tone = 'ok' }) => msg ? <div className={`flex gap-2 rounded-lg border p-3 text-sm ${tone === 'ok' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-800'}`}><CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" />{msg}</div> : null;
