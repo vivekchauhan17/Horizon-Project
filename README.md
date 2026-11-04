@@ -5,7 +5,7 @@ An AI-powered exam preparation platform. Students build a personal **learning ro
 Built for the hackathon theme **Artificial Intelligence in Education**.
 
 **Live demo:** https://horizon-project-qfjm.onrender.com
-**GitHub:** https://github.com/bhupendrasinghbs/Exam-Preap-AI
+**GitHub:** https://github.com/vivekchauhan17/StudyLoopAI
 
 ---
 
